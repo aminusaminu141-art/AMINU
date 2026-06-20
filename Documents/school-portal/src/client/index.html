@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School Portal</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to the School Portal</h1>
+    <nav>
+      <ul>
+        <li><a href="views/principal.html">Principal Dashboard</a></li>
+        <li><a href="views/student.html">Student Dashboard</a></li>
+        <li><a href="views/classMaster.html">Class Master Dashboard</a></li>
+        <li><a href="views/examOfficer.html">Exam Officer Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Login to Access Your Dashboard</h2>
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </main>
+  <script src="scripts/auth.js"></script>
+</body>
+</html>

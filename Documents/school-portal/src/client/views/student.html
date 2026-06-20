@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Student Portal</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="classMaster.html">Class Master</a></li>
+        <li><a href="examOfficer.html">Exam Officer</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Your Grades</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Grade</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="gradesBody">
+          <!-- Grades will be dynamically injected here -->
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Submit Assignment</h2>
+      <form id="assignmentForm">
+        <label for="assignmentTitle">Assignment Title</label>
+        <input type="text" id="assignmentTitle" required placeholder="Enter assignment title">
+
+        <label for="assignmentFile">Upload File</label>
+        <input type="file" id="assignmentFile" required>
+
+        <button type="submit">Submit Assignment</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 School Portal. All rights reserved.</p>
+  </footer>
+
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/dashboard.js"></script>
+</body>
+</html>

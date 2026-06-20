@@ -1,0 +1,20 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "your_username",
+    "password": "your_password",
+    "database": "school_portal"
+  },
+  "server": {
+    "port": 3000
+  },
+  "jwt": {
+    "secret": "your_jwt_secret",
+    "expiresIn": "1h"
+  },
+  "logging": {
+    "level": "info"
+  },
+  "environment": "development"
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Exam Officer Dashboard</title>
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Exam Officer Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="../principal.html">Principal</a></li>
+        <li><a href="../student.html">Student</a></li>
+        <li><a href="../classMaster.html">Class Master</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section>
+    <h2>Manage Exam Schedules</h2>
+    <form id="examScheduleForm">
+      <label>
+        Exam Name
+        <input type="text" id="examName" required placeholder="e.g., Mathematics Midterm">
+      </label>
+      <label>
+        Date
+        <input type="date" id="examDate" required>
+      </label>
+      <label>
+        Duration (minutes)
+        <input type="number" id="examDuration" required min="1">
+      </label>
+      <button type="submit">Add Exam Schedule</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Recorded Exam Schedules</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Exam Name</th>
+          <th>Date</th>
+          <th>Duration</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="examSchedulesBody">
+        <!-- Exam schedules will be injected here -->
+      </tbody>
+    </table>
+    <p id="noSchedulesNotice">No exam schedules recorded yet.</p>
+  </section>
+
+  <script src="../scripts/dashboard.js"></script>
+</body>
+</html>

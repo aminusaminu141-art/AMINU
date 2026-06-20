@@ -1,0 +1,82 @@
+import speech_recognition as sr
+import PySimpleGUI as sg
+import requests
+
+def get_quran_verse(surah_number, verse_number):
+    try:
+        url = f"https://api.alquran.cloud/v1/ayah/{surah_number}:{verse_number}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return data['data']['text'], data['data']['surah']['englishName']
+        return None, None
+    except:
+        return None, None
+
+def search_quran_text(search_text):
+    common_words = ['الله', 'الرحمن', 'الرحيم', 'بسم']
+    if any(word in search_text for word in common_words):
+        verse, surah = get_quran_verse(1, 1)
+        return surah, 1, verse
+    return None, None, "Verse not found in database"
+
+def main():
+    layout = [
+        [sg.Text("Quran Verse Recognition App", font=('Arial', 16))],
+        [sg.Text("Press the button and recite a verse from the Quran")],
+        [sg.Button("Start Listening", size=(15, 2))],
+        [sg.Text("Results:")],
+        [sg.Multiline(size=(60, 15), key='-OUTPUT-', disabled=True)],
+        [sg.Button("Exit")]
+    ]
+    
+    window = sg.Window("Quran App", layout)
+    
+    while True:
+        event, values = window.read()
+        
+        if event in (sg.WIN_CLOSED, "Exit"):
+            break
+            
+        if event == "Start Listening":
+            window['-OUTPUT-'].update("Initializing microphone...")
+            window.refresh()
+            
+            r = sr.Recognizer()
+            try:
+                with sr.Microphone() as source:
+                    window['-OUTPUT-'].update("Listening... Please recite now...")
+                    window.refresh()
+                    
+                    r.adjust_for_ambient_noise(source, duration=1)
+                    audio = r.listen(source, timeout=10)
+                    
+                    window['-OUTPUT-'].update("Processing speech...")
+                    window.refresh()
+                    
+                    try:
+                        text = r.recognize_google(audio, language='ar-SA')
+                        result = f"Recognized text: {text}\n\n"
+                        
+                        surah, verse_num, verse_text = search_quran_text(text)
+                        
+                        if surah:
+                            result += f"Found in Surah: {surah}\n"
+                            result += f"Verse {verse_num}: {verse_text}"
+                        else:
+                            result += "Could not find matching verse in database"
+                            
+                        window['-OUTPUT-'].update(result)
+                        
+                    except sr.UnknownValueError:
+                        window['-OUTPUT-'].update("Could not understand the audio. Please try again.")
+                    except sr.RequestError as e:
+                        window['-OUTPUT-'].update(f"Error with speech service: {e}")
+                        
+            except Exception as e:
+                window['-OUTPUT-'].update(f"Error accessing microphone: {e}")
+    
+    window.close()
+
+if __name__ == "__main__":
+    main()

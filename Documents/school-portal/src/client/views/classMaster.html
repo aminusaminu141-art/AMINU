@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Class Master Dashboard</title>
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Class Master Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="principal.html">Principal</a></li>
+        <li><a href="student.html">Students</a></li>
+        <li><a href="examOfficer.html">Exam Officer</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section>
+    <h2>Manage Class Schedules</h2>
+    <form id="classScheduleForm">
+      <label>
+        Class Name
+        <input type="text" id="className" required placeholder="e.g., Grade 10">
+      </label>
+      <label>
+        Schedule
+        <input type="text" id="classSchedule" required placeholder="e.g., Mon-Fri 9am-3pm">
+      </label>
+      <button type="submit">Save Schedule</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Student Attendance</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Attendance Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceBody">
+        <!-- Attendance records will be injected here -->
+      </tbody>
+    </table>
+  </section>
+
+  <script src="../scripts/dashboard.js"></script>
+</body>
+</html>
