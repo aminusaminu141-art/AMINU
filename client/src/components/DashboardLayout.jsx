@@ -92,6 +92,7 @@ export default function DashboardLayout({ children, title, role }) {
       { path: '/student', label: 'Dashboard', icon: 'dashboard' },
       { path: '/student/results', label: 'My Results', icon: 'results' },
       { path: '/student/attendance', label: 'Attendance', icon: 'attendance' },
+      { path: '/student/fees', label: 'School Fees', icon: 'graduates' },
     ],
     class_master: [
       { path: '/master', label: 'Dashboard', icon: 'dashboard' },
@@ -112,8 +113,13 @@ export default function DashboardLayout({ children, title, role }) {
       { path: '/principal/assignments', label: 'Assignments', icon: 'assignments' },
       { path: '/principal/remarks', label: 'Student Remarks', icon: 'remarks' },
       { path: '/principal/graduates', label: 'Graduates & Certs', icon: 'graduates' },
+    ],
+    bursar: [
+      { path: '/bursar', label: 'Dashboard', icon: 'dashboard' },
+      { path: '/bursar/fees', label: 'Student Fees', icon: 'students' },
     ]
   };
+
 
   const links = navLinks[role] || [];
 

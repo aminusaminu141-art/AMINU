@@ -32,7 +32,9 @@ export default function Login() {
       else if (user.role === 'class_master') navigate('/master');
       else if (user.role === 'exam_officer') navigate('/exam-officer');
       else if (user.role === 'principal') navigate('/principal');
+      else if (user.role === 'bursar') navigate('/bursar');
       else navigate('/');
+
 
     } catch (error) {
       if (error.response && error.response.data.errors) {

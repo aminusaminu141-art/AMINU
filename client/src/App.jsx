@@ -5,6 +5,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import MasterDashboard from './pages/MasterDashboard';
 import ExamOfficerDashboard from './pages/ExamOfficerDashboard';
 import PrincipalDashboard from './pages/PrincipalDashboard';
+import BursarDashboard from './pages/BursarDashboard';
 
 function App() {
   return (
@@ -15,10 +16,12 @@ function App() {
         <Route path="/master/*" element={<MasterDashboard />} />
         <Route path="/exam-officer/*" element={<ExamOfficerDashboard />} />
         <Route path="/principal/*" element={<PrincipalDashboard />} />
+        <Route path="/bursar/*" element={<BursarDashboard />} />
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
 }
+
 
 export default App;
