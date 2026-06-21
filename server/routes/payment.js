@@ -14,6 +14,7 @@ const verifyBursar = (req, res, next) => {
 
 // --- PUBLIC CALLBACKS & WEBHOOKS (NO AUTH REQUIRED TO ALLOW REMITA POSTS) ---
 router.get('/callback', paymentController.handleCallback);
+router.get('/mock-checkout', paymentController.mockCheckout);
 router.post('/webhook', paymentController.handleWebhook);
 
 // --- PROTECTED ROUTES (STUDENTS, BURSARS & ADMINS) ---

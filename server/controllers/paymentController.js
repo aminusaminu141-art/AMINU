@@ -149,7 +149,12 @@ module.exports = {
 
             // Formulate redirect checkout URL
             const responseurl = `${req.protocol}://${req.get('host')}/api/payment/callback`;
-            checkoutUrl = `${CHECKOUT_URL}?rrr=${rrr}&merchantId=${MERCHANT_ID}&responseurl=${encodeURIComponent(responseurl)}&orderId=${orderId}`;
+            
+            if (isMock) {
+                checkoutUrl = `${req.protocol}://${req.get('host')}/api/payment/mock-checkout?rrr=${rrr}&orderId=${orderId}&amount=${amountStr}&responseurl=${encodeURIComponent(responseurl)}`;
+            } else {
+                checkoutUrl = `${CHECKOUT_URL}?rrr=${rrr}&merchantId=${MERCHANT_ID}&responseurl=${encodeURIComponent(responseurl)}&orderId=${orderId}`;
+            }
 
             res.json({
                 rrr,
@@ -223,6 +228,194 @@ module.exports = {
             console.error(err);
             res.send('<h3>Server error processing payment callback.</h3>');
         }
+    },
+
+    // Mock Gateway checkout template rendered directly from Node server when Remita demo Sandbox API fails/times out
+    mockCheckout(req, res) {
+        const { rrr, orderId, amount, responseurl } = req.query;
+        if (!orderId || !rrr || !amount || !responseurl) {
+            return res.send('<h3>Invalid checkout session params</h3>');
+        }
+
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Remita Payment Gateway - Sandbox Mock</title>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+                <style>
+                    body {
+                        font-family: 'Plus Jakarta Sans', sans-serif;
+                        background-color: #f8fafc;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        color: #0f172a;
+                    }
+                    .checkout-card {
+                        background: white;
+                        border-radius: 16px;
+                        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+                        width: 100%;
+                        max-width: 480px;
+                        padding: 35px;
+                        border: 1px solid #e2e8f0;
+                    }
+                    .gateway-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 2.5px solid #ff5722;
+                        padding-bottom: 20px;
+                        margin-bottom: 25px;
+                    }
+                    .remita-badge {
+                        background-color: #ff5722;
+                        color: white;
+                        font-weight: 800;
+                        padding: 6px 12px;
+                        border-radius: 6px;
+                        font-size: 0.8rem;
+                        letter-spacing: 0.5px;
+                    }
+                    .detail-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 14px;
+                        font-size: 0.9rem;
+                    }
+                    .detail-label {
+                        color: #64748b;
+                        font-weight: 600;
+                    }
+                    .detail-value {
+                        font-weight: 700;
+                        color: #1e293b;
+                    }
+                    .amount-display {
+                        background: #fff8f6;
+                        border: 1.5px dashed #ff8a65;
+                        padding: 18px;
+                        border-radius: 10px;
+                        text-align: center;
+                        margin: 25px 0;
+                    }
+                    .amount-val {
+                        font-size: 2rem;
+                        font-weight: 900;
+                        color: #e64a19;
+                        margin-top: 6px;
+                    }
+                    .tabs {
+                        display: flex;
+                        gap: 12px;
+                        border-bottom: 1.5px solid #e2e8f0;
+                        margin-bottom: 25px;
+                    }
+                    .tab {
+                        padding: 10px 4px;
+                        font-weight: 700;
+                        font-size: 0.88rem;
+                        color: #64748b;
+                        cursor: pointer;
+                        border-bottom: 2.5px solid transparent;
+                        transition: all 150ms ease;
+                    }
+                    .tab.active {
+                        color: #ff5722;
+                        border-bottom-color: #ff5722;
+                    }
+                    .payment-option-details {
+                        margin-bottom: 30px;
+                        font-size: 0.82rem;
+                        color: #475569;
+                        line-height: 1.5;
+                        background: #f8fafc;
+                        padding: 12px 16px;
+                        border-radius: 8px;
+                        border-left: 4px solid #ff5722;
+                    }
+                    .btn-pay {
+                        background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+                        color: white;
+                        border: none;
+                        font-weight: 800;
+                        padding: 15px;
+                        width: 100%;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 14px rgba(255, 87, 34, 0.25);
+                        transition: all 180ms ease;
+                        font-size: 1.05rem;
+                        letter-spacing: 0.5px;
+                    }
+                    .btn-pay:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);
+                    }
+                    .btn-pay:active {
+                        transform: translateY(0);
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="checkout-card">
+                    <div class="gateway-header">
+                        <div style="font-weight: 900; font-size: 1.25rem; color: #0f172a; letter-spacing: -0.5px;">Bichi Academy</div>
+                        <div class="remita-badge">REMITA SANDBOX</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <span class="detail-label">Beneficiary:</span>
+                        <span class="detail-value">Bichi Academy Portal</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Payment Class:</span>
+                        <span class="detail-value">School Fees Settle</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">RRR Code:</span>
+                        <span class="detail-value" style="font-family: monospace; color: #6366f1; font-weight: bold; font-size: 0.95rem;">${rrr}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Order Ref:</span>
+                        <span class="detail-value" style="font-family: monospace; font-size: 0.85rem;">${orderId}</span>
+                    </div>
+
+                    <div class="amount-display">
+                        <div class="detail-label" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #e64a19;">Amount to Pay</div>
+                        <div class="amount-val">NGN ${parseFloat(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active">Card Options</div>
+                        <div class="tab">Bank Transfer</div>
+                        <div class="tab">USSD Pay</div>
+                    </div>
+
+                    <div class="payment-option-details">
+                        <strong style="color: #0f172a;">🔒 Remita Sandbox Emulator Mode</strong><br/>
+                        Remita Demo Servers are currently offline. This page acts as a secure local replica gateway. Submitting payment will trigger verification callbacks and finalize student ledger.
+                    </div>
+
+                    <button onclick="processPayment()" class="btn-pay">
+                        Submit Payment Settle
+                    </button>
+                </div>
+
+                <script>
+                    function processPayment() {
+                        const target = "${decodeURIComponent(responseurl)}?orderId=${orderId}&rrr=${rrr}";
+                        window.location.href = target;
+                    }
+                </script>
+            </body>
+            </html>
+        `);
     },
 
     // 4. Client polling route to check / verify payment on-demand
