@@ -750,6 +750,14 @@ export default function StudentDashboard() {
               <div className="error-message">{feesError}</div>
             ) : !feesDetails ? (
               <p style={{ color: 'var(--color-secondary)', fontStyle: 'italic' }}>No fees configured for this class and period.</p>
+            ) : feesDetails.total_amount === 0 ? (
+              <div className="dashboard-card animate-fade-in" style={{ textAlign: 'center', padding: 'var(--space-2xl) var(--space-md)' }}>
+                <div style={{ fontSize: '3rem', marginBottom: 'var(--space-sm)' }}>📭</div>
+                <h3 style={{ margin: 0, color: 'var(--color-primary)' }}>No Fees Scheduled</h3>
+                <p style={{ marginTop: 'var(--space-xs)', color: 'var(--color-secondary)', fontSize: '0.95rem' }}>
+                  School fees have not yet been configured for your class in this academic period ({term}, {year}) by the Bursar's Office.
+                </p>
+              </div>
             ) : (
               <>
                 {/* Financial Summary Cards */}

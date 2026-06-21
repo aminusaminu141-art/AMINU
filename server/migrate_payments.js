@@ -78,37 +78,42 @@ async function migrate() {
         // Seed some sample fee configurations for active classes
         console.log('Seeding sample fee configurations...');
         const [classes] = await pool.query('SELECT id, name FROM classes');
+        const terms = ['1st Term', '2nd Term', '3rd Term'];
         for (let c of classes) {
             let feeAmount = 45000.00;
             if (c.name.includes('SS')) feeAmount = 60000.00;
             if (c.name.includes('Nursery')) feeAmount = 30000.00;
 
-            await pool.query(`
-                INSERT IGNORE INTO fee_configurations (class_id, academic_term, academic_year, amount)
-                VALUES (?, ?, ?, ?)
-            `, [c.id, '1st Term', '2025/2026', feeAmount]);
+            for (let t of terms) {
+                await pool.query(`
+                    INSERT IGNORE INTO fee_configurations (class_id, academic_term, academic_year, amount)
+                    VALUES (?, ?, ?, ?)
+                `, [c.id, t, '2025/2026', feeAmount]);
+            }
         }
-        console.log('Seeded sample fee configurations.');
+        console.log('Seeded sample fee configurations for all terms.');
 
         // Link existing students to their fee records
         console.log('Initializing student fee records...');
         const [students] = await pool.query('SELECT id, class_id FROM users WHERE role = "student"');
         for (let s of students) {
             if (s.class_id) {
-                const [feeConfig] = await pool.query(`
-                    SELECT amount FROM fee_configurations 
-                    WHERE class_id = ? AND academic_term = ? AND academic_year = ?
-                `, [s.class_id, '1st Term', '2025/2026']);
-                
-                if (feeConfig.length > 0) {
-                    await pool.query(`
-                        INSERT IGNORE INTO student_fees (student_id, academic_term, academic_year, total_amount, amount_paid, status)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    `, [s.id, '1st Term', '2025/2026', feeConfig[0].amount, 0.00, 'unpaid']);
+                for (let t of terms) {
+                    const [feeConfig] = await pool.query(`
+                        SELECT amount FROM fee_configurations 
+                        WHERE class_id = ? AND academic_term = ? AND academic_year = ?
+                    `, [s.class_id, t, '2025/2026']);
+                    
+                    if (feeConfig.length > 0) {
+                        await pool.query(`
+                            INSERT IGNORE INTO student_fees (student_id, academic_term, academic_year, total_amount, amount_paid, status)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        `, [s.id, t, '2025/2026', feeConfig[0].amount, 0.00, 'unpaid']);
+                    }
                 }
             }
         }
-        console.log('Student fee records initialized.');
+        console.log('Student fee records initialized for all terms.');
         console.log('Migration completed successfully!');
     } catch (err) {
         console.error('Error during migration:', err);
