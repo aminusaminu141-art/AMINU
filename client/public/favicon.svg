@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Gradient background circle -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Graduation cap -->
+  <path d="M32 18L48 26L32 34L16 26L32 18Z" fill="white" opacity="0.95"/>
+  <path d="M24 30v9c0 0 3.5 5 8 5s8-5 8-5V30" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 26v9" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="46" cy="36" r="2" fill="white"/>
+</svg>

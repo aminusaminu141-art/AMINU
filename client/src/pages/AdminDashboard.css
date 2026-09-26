@@ -1,0 +1,39 @@
+/* ================================================================
+   ADMIN DASHBOARD — PREMIUM DARK THEME OVERRIDES
+   ================================================================ */
+
+/* Force deep dark in admin view regardless of global theme */
+[data-theme="dark"] .admin-page-shell {
+  --ad-bg:           #04060d;
+  --ad-surface:      #090c18;
+  --ad-card:         rgba(129, 140, 248, 0.05);
+  --ad-border:       rgba(129, 140, 248, 0.10);
+  --ad-accent:       #818cf8;
+  --ad-glow:         rgba(129, 140, 248, 0.22);
+}
+
+/* Metric card glow effects on hover */
+[data-theme="dark"] .admin-stat-card {
+  background: rgba(9, 12, 24, 0.8);
+  border: 1px solid rgba(129, 140, 248, 0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .admin-stat-card:hover {
+  border-color: rgba(129, 140, 248, 0.30);
+  box-shadow: 0 0 32px rgba(129, 140, 248, 0.12), 0 8px 32px rgba(0,0,0,0.6);
+  transform: translateY(-4px);
+}
+
+/* Premium scrollbar in main content */
+.admin-content-area::-webkit-scrollbar { width: 5px; }
+.admin-content-area::-webkit-scrollbar-track { background: transparent; }
+.admin-content-area::-webkit-scrollbar-thumb {
+  background: rgba(129, 140, 248, 0.2);
+  border-radius: 99px;
+}
+.admin-content-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(129, 140, 248, 0.4);
+}
